@@ -83,8 +83,44 @@ def absolute_value(val):
     a  = np.round(val)
     return a
 columns_list=["yes","no"]
-question_eleven=data.drop(['student 7', 'student 79', 'student 89']) #mark none or both yes/no
+#mark none or both yes/no
+question_eleven=data.drop(['student 7', 'student 79', 'student 89']) 
 plt.figure(figsize=[8,6])
 plt.pie(question_eleven[58].value_counts(),labels=columns_list,startangle=90,
         autopct=absolute_value)   
 plt.title('Do you have problem to manage your time for studying?')
+
+#question 16
+legend_list=["1-I feel good.",
+              "2-I don't feel good, but it does not affect my studies performance.",
+              "3-I don't feel good, and it does affect my studies performance.",
+              "4-I need help."]
+columns_list=['1','2','3','4']
+question_sixteen=data[data.columns[72:76]]
+plt.figure(figsize=[8,6])
+answer_sixteen=question_sixteen.sum()
+sb.barplot(columns_list,answer_sixteen, color= base_color)
+plt.xticks(rotation=18)
+plt.ylabel('count')
+plt.legend(legend_list)
+plt.grid(axis="y")
+plt.title('How emotionally stable are you?')
+
+#question 18
+data=data.rename(columns={5:"dntLikeCourse"})
+data=data.rename(columns={6:"time_research"})
+data=data.rename(columns={7:"time_homework"})
+data=data.rename(columns={8:"time_recreation"})
+data=data.rename(columns={9:"dntLikeMechanics"})
+data=data.rename(columns={10:"attentionInClass"})
+data=data.rename(columns={11:"missMotivation"})
+data=data.rename(columns={12:"health/family"})
+data=data.rename(columns={13:"Teacher`sMethod"})
+data=data.rename(columns={82:"thought_givingUp"})
+problems=data[["dntLikeCourse","time_research","time_homework","time_recreation",
+                 "dntLikeMechanics","attentionInClass","missMotivation","health/family",
+                 "Teacher`sMethod","thought_givingUp"]]
+plt.figure(figsize=[8,6])
+sb.heatmap(problems.corr(),annot=True)
+plt.ylabel('')
+plt.xlabel('')
