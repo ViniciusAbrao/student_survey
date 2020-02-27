@@ -7,6 +7,7 @@ Created on Thu Feb 27 10:10:04 2020
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sb
+import numpy as np
 
 data=pd.read_csv('data.csv')
 data=data.fillna(0)
@@ -39,6 +40,8 @@ plt.figure(figsize=[8,6])
 ax=sb.countplot(x='answer_six',hue='question_six',data=df)
 plt.xticks(range(7),answer_list,rotation=15)
 plt.xlabel('')
+plt.legend(title='')
+plt.title('Which are the valuation method that most contributes to your learning?')
 
 #question 9 
 columns_list=["anyone","neither","structural/autom","thermal_fluids",
@@ -49,6 +52,8 @@ answer_nine=question_nine.sum()
 base_color = sb.color_palette()[0]
 sb.barplot(columns_list,answer_nine, color= base_color)
 plt.xticks(rotation=18)
+plt.ylabel('count')
+plt.title('What are your favorite areas in Mechanical Engineering?')
 
 #question 10
 columns_list=["neither","structural/autom","thermal_fluids",
@@ -58,10 +63,28 @@ plt.figure(figsize=[8,6])
 answer_ten=question_ten.sum()
 sb.barplot(columns_list,answer_ten, color= base_color)
 plt.xticks(rotation=18)
+plt.ylabel('count')
+plt.title('Which courses do you had lower performance?')
 
 #question 12
 data=data.rename(columns={60:"number_disciplines"})
 answer_twelve=data[data.number_disciplines != 0]
 plt.figure(figsize=[8,6])
-plt.hist(data=answer_twelve, x='number_disciplines')
-plt.xticks(rotation=18)
+bins=np.arange(4.5,11.5,1)
+plt.hist(data=answer_twelve, x='number_disciplines', bins=bins, rwidth=0.7)
+plt.xlabel('number_of_disciplines')
+plt.ylabel('count')
+plt.title('How many courses do you have in a semester?')
+
+#question 11
+#mark_both=data[data[data.columns[58]]+data[data.columns[57]]==2]
+#mark_none=data[data[data.columns[58]]+data[data.columns[57]]==0]
+def absolute_value(val):
+    a  = np.round(val)
+    return a
+columns_list=["yes","no"]
+question_eleven=data.drop(['student 7', 'student 79', 'student 89']) #mark none or both yes/no
+plt.figure(figsize=[8,6])
+plt.pie(question_eleven[58].value_counts(),labels=columns_list,startangle=90,
+        autopct=absolute_value)   
+plt.title('Do you have problem to manage your time for studying?')
