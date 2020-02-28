@@ -107,6 +107,7 @@ plt.grid(axis="y")
 plt.title('How emotionally stable are you?')
 
 #question 18
+data=data.rename(columns={4:"lowPerformance"})
 data=data.rename(columns={5:"dntLikeCourse"})
 data=data.rename(columns={6:"time_research"})
 data=data.rename(columns={7:"time_homework"})
@@ -117,10 +118,25 @@ data=data.rename(columns={11:"missMotivation"})
 data=data.rename(columns={12:"health/family"})
 data=data.rename(columns={13:"Teacher`sMethod"})
 data=data.rename(columns={82:"thought_givingUp"})
-problems=data[["dntLikeCourse","time_research","time_homework","time_recreation",
+problems=data[["lowPerformance","dntLikeCourse","time_research","time_homework","time_recreation",
                  "dntLikeMechanics","attentionInClass","missMotivation","health/family",
                  "Teacher`sMethod","thought_givingUp"]]
 plt.figure(figsize=[8,6])
 sb.heatmap(problems.corr(),annot=True)
 plt.ylabel('')
 plt.xlabel('')
+
+#question 17
+legend_list=["1-1x per week.",
+              "2-2x or more per week.",
+              "3-Sometimes.",
+              "4-Never."]
+columns_list=['1','2','3','4']
+question_seventeen=data[data.columns[76:80]]
+plt.figure(figsize=[8,6])
+answer_seventeen=question_seventeen.sum()
+sb.barplot(columns_list,answer_seventeen, color= base_color)
+plt.ylabel('count')
+plt.legend(legend_list)
+plt.grid(axis="y")
+plt.title('How often do you go parties/recreation?')
