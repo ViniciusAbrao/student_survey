@@ -140,3 +140,6 @@ plt.ylabel('count')
 plt.legend(legend_list)
 plt.grid(axis="y")
 plt.title('How often do you go parties/recreation?')
+
+print('Have you thought about giving up?')
+print(data["thought_givingUp"].sum()/n)
