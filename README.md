@@ -1,8 +1,9 @@
 # Data analysis - Why do students drop out?
 
+test
 Check the post at: https://medium.com/@abrao.vinicius/beyond-the-algebra-what-is-going-on-with-our-engineering-students-35cbdd7bedf
 
-When starting an engineering degree, one of the biggest challenges for students is the subjects of calculus and algebra. Currently, an average of 50% of students are unable to complete these subjects in the Mechanical Engineering course at the Federal University of Tri√¢ngulo Mineiro.
+When starting an engineering degree, one of the biggest challenges for students is the subjects of calculus and algebra. Currently, an average of 50% of students are unable to complete these subjects in the Mechanical Engineering course at the Federal University of Tri‚ngulo Mineiro.
 
 The difficulties during the course are not different from what the students encountered in the past, but each day the number of students thinking about giving up the course from the 1st to the 4th year increases. 
 

@@ -8,6 +8,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sb
 import numpy as np
+import statsmodels.api as sm;
+from patsy import dmatrices
+from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 data=pd.read_csv('data.csv')
 data=data.fillna(0)
@@ -115,16 +118,24 @@ data=data.rename(columns={8:"time_recreation"})
 data=data.rename(columns={9:"dntLikeMechanics"})
 data=data.rename(columns={10:"attentionInClass"})
 data=data.rename(columns={11:"missMotivation"})
-data=data.rename(columns={12:"health/family"})
-data=data.rename(columns={13:"Teacher`sMethod"})
+data=data.rename(columns={12:"healthfamily"})
+data=data.rename(columns={13:"TeacherMethod"})
 data=data.rename(columns={82:"thought_givingUp"})
+data["intercept"]=1
 problems=data[["lowPerformance","dntLikeCourse","time_research","time_homework","time_recreation",
-                 "dntLikeMechanics","attentionInClass","missMotivation","health/family",
-                 "Teacher`sMethod","thought_givingUp"]]
+                 "dntLikeMechanics","attentionInClass","missMotivation","healthfamily",
+                 "TeacherMethod","thought_givingUp"]]
 plt.figure(figsize=[8,6])
 sb.heatmap(problems.corr(),annot=True)
 plt.ylabel('')
 plt.xlabel('')
+
+#multiple linear regression
+lm=sm.OLS(data['thought_givingUp'],data[['intercept',"lowPerformance","dntLikeCourse","time_research","time_homework","time_recreation",
+                  "dntLikeMechanics","attentionInClass","missMotivation","healthfamily",
+                  "TeacherMethod",]])
+results=lm.fit()
+print(results.summary())
 
 #question 17
 legend_list=["1-1x per week.",
@@ -137,9 +148,23 @@ plt.figure(figsize=[8,6])
 answer_seventeen=question_seventeen.sum()
 sb.barplot(columns_list,answer_seventeen, color= base_color)
 plt.ylabel('count')
+
 plt.legend(legend_list)
 plt.grid(axis="y")
 plt.title('How often do you go parties/recreation?')
 
 print('Have you thought about giving up?')
 print(data["thought_givingUp"].sum()/n)
+
+#pairplot
+#sb.pairplot(problems)
+
+#vif
+y, X = dmatrices('thought_givingUp ~ healthfamily + lowPerformance + dntLikeCourse + time_research + \
+                 time_homework + time_recreation + dntLikeMechanics + attentionInClass + \
+                     missMotivation + TeacherMethod ', data, return_type = 'dataframe')
+
+vif = pd.DataFrame()
+vif["VIF Factor"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
+vif["features"] = X.columns 
+print(vif)
